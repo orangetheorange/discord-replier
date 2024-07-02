@@ -1,0 +1,50 @@
+#!/bin/python
+
+import discord
+
+
+class MyClient(discord.Client):
+    async def on_ready(self):
+        print('Logged on as', self.user)
+
+    async def on_message(self, message):
+        if message.author == self.user:
+            pass	
+
+        else:
+            await message.channel.send(self.user + ' is not here now. Please message later. Thank you.')
+            print('One message replied to ' + message.author)
+
+
+
+print("""
+---------------------------------------------------------------------------
+                          Discord-auto-replier
+                           By orangetheorange
+           https://github.com/orangetheorange/discord-replier
+---------------------------------------------------------------------------
+
+[*] Thank you for using, if you find any bugs, please report to me.
+[*] Please read token.md for your discord token.
+
+[!] If you enter a token, please keep it secretly, if someone has it he can
+have full access to your account.           
+""")
+
+global token
+token = ""
+with open('token.txt', 'r', encoding='utf-8') as tok:
+    if tok.read() == "":
+        with open('token.txt', 'w', encoding='utf-8') as tok:
+            token = input('Put your discord token here: ')
+            tok.write(token)
+    else:
+        with open('token.txt', 'r', encoding='utf-8') as toke:
+            token = toke.read()
+print('Used token: ' + token)
+intents = discord.Intents.default()
+intents.message_content = True
+client = MyClient(intents=intents)
+client.run(token)
+
+
